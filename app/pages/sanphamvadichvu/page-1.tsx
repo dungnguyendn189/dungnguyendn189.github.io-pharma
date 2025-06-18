@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -41,8 +41,7 @@ interface Pagination {
     hasPrev: boolean;
 }
 
-// Component chính chứa useSearchParams
-function ProductsPageContent() {
+export default function ProductsPage() {
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get('category');
 
@@ -594,24 +593,4 @@ function ProductsPageContent() {
             )}
         </div>
     );
-}
-
-// Component wrapper với Suspense - PHẦN QUAN TRỌNG
-export default function ProductsPage() {
-    return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-gray-50">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="flex items-center justify-center h-64">
-                        <div className="text-center">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-                            <p className="mt-4 text-gray-600">Đang tải...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }>
-            <ProductsPageContent />
-        </Suspense>
-    )
 }

@@ -4,10 +4,11 @@ import { prisma } from '@/lib/prisma'
 // GET - Lấy chi tiết một danh mục
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params  // ← AWAIT PARAMS
+        const id = parseInt(idParam)
 
         const danhMuc = await prisma.danhMuc.findUnique({
             where: { id },
@@ -47,10 +48,11 @@ export async function GET(
 // PUT - Cập nhật danh mục
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params  // ← AWAIT PARAMS
+        const id = parseInt(idParam)
         const data = await request.json()
 
         // Kiểm tra danh mục có tồn tại không
@@ -110,10 +112,11 @@ export async function PUT(
 // DELETE - Xóa danh mục
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params
+        const id = parseInt(idParam)
 
         // Kiểm tra danh mục có tồn tại không
         const existingDanhMuc = await prisma.danhMuc.findUnique({

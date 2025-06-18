@@ -119,7 +119,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Cam kết trách nhiệm với cộng đồng</h3>
                     <p className="text-gray-700 text-center">
-                        Không chỉ cung cấp sản phẩm chất lượng, EQ Pharma còn thực hiện nhiều chương trình vì sức khỏe cộng đồng, nâng cao nhận thức về chăm sóc sức khỏe, khẳng định sứ mệnh "LUÔN TỐT HƠN" trong từng sản phẩm và dịch vụ.
+                        Không chỉ cung cấp sản phẩm chất lượng, EQ Pharma còn thực hiện nhiều chương trình vì sức khỏe cộng đồng, nâng cao nhận thức về chăm sóc sức khỏe, khẳng định sứ mệnh &quot;LUÔN TỐT HƠN&quot; trong từng sản phẩm và dịch vụ.
                     </p>
                 </div>
             </div>

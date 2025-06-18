@@ -3,10 +3,6 @@
 import React from 'react';
 import Image from 'next/image';
 import ico1 from "@/public/ico1.png";
-import ico2 from "@/public/ico2.png";
-import ico3 from "@/public/ico3.png";
-import ico4 from "@/public/ico4.png";
-import ico5 from "@/public/ico5.png";
 
 
 export default function CoreValues() {

@@ -7,10 +7,11 @@ const prisma = new PrismaClient()
 // GET - Lấy social media theo ID
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params  // ← AWAIT PARAMS
+        const id = parseInt(idParam)
 
         const socialMedia = await prisma.socialMedia.findUnique({
             where: { id }
@@ -39,10 +40,11 @@ export async function GET(
 // PUT - Cập nhật social media
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params  // ← AWAIT PARAMS
+        const id = parseInt(idParam)
         const body = await request.json()
         const { tenMangXaHoi, url, icon, thuTu, trangThai } = body
 
@@ -82,10 +84,11 @@ export async function PUT(
 // DELETE - Xóa social media
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params  // ← AWAIT PARAMS
+        const id = parseInt(idParam)
 
         // Kiểm tra xem social media có tồn tại không
         const existingSocialMedia = await prisma.socialMedia.findUnique({

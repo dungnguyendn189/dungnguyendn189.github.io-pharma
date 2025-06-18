@@ -4,10 +4,10 @@ import { prisma } from '@/lib/prisma'
 // GET - Lấy chi tiết tin tức
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id: idParam } = await params
+        const { id: idParam } = await params  // ← AWAIT PARAMS
         const id = parseInt(idParam)
 
         if (isNaN(id)) {
@@ -51,10 +51,11 @@ export async function GET(
 // PUT - Cập nhật tin tức
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params
+        const id = parseInt(idParam)
         const data = await request.json()
 
         if (isNaN(id)) {
@@ -123,10 +124,11 @@ export async function PUT(
 // DELETE - Xóa tin tức
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id)
+        const { id: idParam } = await params
+        const id = parseInt(idParam)
 
         if (isNaN(id)) {
             return NextResponse.json(

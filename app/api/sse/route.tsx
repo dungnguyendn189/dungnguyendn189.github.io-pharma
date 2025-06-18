@@ -1,26 +1,25 @@
-import { NextRequest, } from 'next/server'
+import { addClient, removeClient } from '@/app/api/lib/sse'
 
-// Store active connections
-const clients = new Set<ReadableStreamDefaultController>()
+export async function GET() {
+    const clientId = Math.random().toString(36).substring(7)
 
-export async function GET(request: NextRequest) {
     const stream = new ReadableStream({
         start(controller) {
-            // Add client to active connections
-            clients.add(controller)
+            // Add client to list
+            addClient(clientId, controller)
 
             // Send initial connection message
-            controller.enqueue(`data: ${JSON.stringify({
-                type: 'connected',
-                message: 'Kết nối thành công',
-                timestamp: new Date().toISOString()
-            })}\n\n`)
+            controller.enqueue(
+                new TextEncoder().encode(`data: ${JSON.stringify({
+                    type: 'connected',
+                    message: 'Connected to notifications'
+                })}\n\n`)
+            )
+        },
 
-            // Cleanup when client disconnects
-            request.signal.addEventListener('abort', () => {
-                clients.delete(controller)
-                controller.close()
-            })
+        cancel() {
+            // Remove client when connection closes
+            removeClient(clientId)
         }
     })
 
@@ -35,23 +34,3 @@ export async function GET(request: NextRequest) {
     })
 }
 
-// Function to broadcast notifications to all clients
-interface NotificationData {
-    type: string;
-    message: string;
-    timestamp?: string;
-}
-
-export function broadcastNotification(data: NotificationData): void {
-    const message = `data: ${JSON.stringify(data)}\n\n`
-
-    clients.forEach((controller: ReadableStreamDefaultController) => {
-        try {
-            controller.enqueue(message)
-        } catch (error) {
-            // Remove dead connections
-            clients.delete(controller)
-            console.log(error, 'Error sending message to client, removing dead connection')
-        }
-    })
-}

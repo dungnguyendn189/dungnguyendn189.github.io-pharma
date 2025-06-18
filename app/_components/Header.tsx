@@ -214,7 +214,7 @@ export default function Header() {
                                     href={item.href}
                                     className="text-white font-bold py-3 px-4 hover:underline flex items-center"
                                 >
-                                    {item.label}
+                                    <p className="text-xs lg:text-sm">{item.label}</p>
                                     {item.children && (
                                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />

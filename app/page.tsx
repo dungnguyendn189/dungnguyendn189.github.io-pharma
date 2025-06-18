@@ -28,7 +28,7 @@ export default function Home() {
           titleColor="text-green-500"
           showBorder={true}
           layout="image-showcase"
-          detailLink="/doi-tac"
+          detailLink="/pages/gioithieu"
           className="flex flex-col justify-between items-start gap-4 h-full"
         />
       </div>
@@ -40,7 +40,7 @@ export default function Home() {
           align="left"
           titleColor="text-green-500"
           showBorder={true}
-          detailLink="/doi-tac"
+          detailLink="/pages/gioithieu"
         />
         <CoreValues />
       </div >

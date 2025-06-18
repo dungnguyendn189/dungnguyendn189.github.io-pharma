@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -20,10 +20,10 @@ interface BannerItem {
 
 export default function Banner() {
     const banners: BannerItem[] = [
-        { id: 1, image: '/banner1.png', link: '/link-to-page-1', alt: 'Banner 1', aspectRatio: '16/9' },
-        { id: 2, image: '/banner2.png', link: '/link-to-page-2', alt: 'Banner 2', aspectRatio: '16/9' },
-        { id: 3, image: '/banner3.png', link: '/link-to-page-3', alt: 'Banner 3', aspectRatio: '16/9' },
-        { id: 4, image: '/banner4.png', link: '/link-to-page-4', alt: 'Banner 4', aspectRatio: '16/9' },
+        { id: 1, image: '/banner1.png', link: '/pages/sanphamvadichvu', alt: 'Banner 1', aspectRatio: '16/9' },
+        { id: 2, image: '/banner2.png', link: '/pages/sanphamvadichvu', alt: 'Banner 2', aspectRatio: '16/9' },
+        { id: 3, image: '/banner3.png', link: '/pages/sanphamvadichvu', alt: 'Banner 3', aspectRatio: '16/9' },
+        { id: 4, image: '/banner4.png', link: '/pages/sanphamvadichvu', alt: 'Banner 4', aspectRatio: '16/9' },
     ]
 
     const [mounted, setMounted] = useState(false);
@@ -39,7 +39,7 @@ export default function Banner() {
     return (
         <div className='relative w-full'>
             <Swiper
-                className="w-full h-[600px]" // Sử dụng aspect-ratio thay vì chiều cao cố định
+                className="w-full h-auto" // Sử dụng aspect-ratio thay vì chiều cao cố định
                 modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={0}
                 slidesPerView={1}
@@ -50,15 +50,13 @@ export default function Banner() {
             >
                 {banners.map((banner) => (
                     <SwiperSlide key={banner.id}>
-                        <Link href={banner.link} className="block w-full h-full">
-                            <div className="relative w-full h-full">
-                                <Image
+                        <Link href={banner.link} className="block w-full">
+                            <div className="relative w-full overflow-hidden">
+                                <img
                                     src={banner.image}
                                     alt={banner.alt}
-                                    fill
-                                    priority
-                                    sizes="100vw"
-                                    className="fited object-cover" // Thay "fitted" bằng "object-cover" để ảnh luôn lấp đầy khung
+                                    className="w-full h-auto  object-cover"
+                                    loading="eager"
                                 />
                             </div>
                         </Link>

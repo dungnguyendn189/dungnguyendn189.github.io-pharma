@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  tenDangNhap String   @unique @map("ten_dang_nhap")
+  matKhau     String   @map("mat_khau")
+  email       String   @unique
+  hoTen       String   @map("ho_ten")
+  vaiTro      String   @default("admin") @map("vai_tro")
+  trangThai   String   @default("hoat_dong") @map("trang_thai")
+  taoLuc      DateTime @default(now()) @map("tao_luc")
+  capNhatLuc  DateTime @updatedAt @map("cap_nhat_luc")
+
+  @@map("admin")
+}
+
+model Thuoc {
+  id          Int       @id @default(autoincrement())
+  tenThuoc    String    @map("ten_thuoc")
+  moTa        String?   @map("mo_ta")
+  gia         Float
+  soLuong     Int       @map("so_luong")
+  danhMucId   Int       @map("danh_muc_id")
+  hangSanXuat String    @map("hang_san_xuat")
+  xuatXu      String    @map("xuat_xu")
+  hinhAnh     String?   @map("hinh_anh")
+  trangThai   String    @default("con_hang") @map("trang_thai")
+  hanSuDung   DateTime? @map("han_su_dung")
+  cachDung    String?   @map("cach_dung")
+  thanPhan    String?   @map("than_phan")
+  congDung    String?   @map("cong_dung")
+  luotXem     Int       @default(0) @map("luot_xem")
+  taoLuc      DateTime  @default(now()) @map("tao_luc")
+  capNhatLuc  DateTime  @updatedAt @map("cap_nhat_luc")
+  danhMuc     DanhMuc   @relation(fields: [danhMucId], references: [id])
+
+  @@map("thuoc")
+}
+
+model TinTuc {
+  id         Int       @id @default(autoincrement())
+  tieuDe     String    @map("tieu_de")
+  tomTat     String?   @map("tom_tat")
+  noiDung    String    @map("noi_dung")
+  hinhAnh    String?   @map("hinh_anh")
+  tacGia     String    @map("tac_gia")
+  trangThai  String    @default("nhap") @map("trang_thai")
+  luotXem    Int       @default(0) @map("luot_xem")
+  taoLuc     DateTime  @default(now()) @map("tao_luc")
+  capNhatLuc DateTime  @updatedAt @map("cap_nhat_luc")
+  xuatBanLuc DateTime? @map("xuat_ban_luc")
+  tags       String?
+
+  @@map("tin_tuc")
+}
+
+model DanhMuc {
+  id         Int      @id @default(autoincrement())
+  tenDanhMuc String   @unique @map("ten_danh_muc")
+  moTa       String?  @map("mo_ta")
+  icon       String?
+  mauSac     String?  @map("mau_sac")
+  thuTu      Int      @default(0) @map("thu_tu")
+  trangThai  String   @default("hoat_dong") @map("trang_thai")
+  taoLuc     DateTime @default(now()) @map("tao_luc")
+  capNhatLuc DateTime @updatedAt @map("cap_nhat_luc")
+  thuoc      Thuoc[]
+
+  @@map("danh_muc")
+}
+
+model TuyenDung {
+  id              Int      @id @default(autoincrement())
+  tieuDe          String   @map("tieu_de")
+  viTri           String   @map("vi_tri")
+  moTaCongViec    String   @map("mo_ta_cong_viec")
+  yeuCau          String   @map("yeu_cau")
+  quyenLoi        String?  @map("quyen_loi")
+  mucLuong        String   @map("muc_luong")
+  diaDiem         String   @map("dia_diem")
+  loaiHinhLamViec String   @map("loai_hinh_lam_viec")
+  kinhNghiem      String   @map("kinh_nghiem")
+  hanNop          DateTime @map("han_nop")
+  hinhAnh         String?  @map("hinh_anh") // ← Thêm dòng này
+  trangThai       String   @default("dang_tuyen") @map("trang_thai")
+  luotXem         Int      @default(0) @map("luot_xem")
+  taoLuc          DateTime @default(now()) @map("tao_luc")
+  capNhatLuc      DateTime @updatedAt @map("cap_nhat_luc")
+  // ungTuyen        UngTuyen[]
+
+  @@map("tuyen_dung")
+}
+
+model DaiLyPhanPhoi {
+  id            Int      @id @default(autoincrement())
+  hoTen         String   @map("ho_ten")
+  email         String
+  soDienThoai   String   @map("so_dien_thoai")
+  noiDungDangKy String   @map("noi_dung_dang_ky") // Dropdown: quay_thuoc_phan_phoi, etc.
+  diaChi        String   @map("dia_chi") // Địa chỉ đầy đủ
+  tinhThanhPho  String   @map("tinh_thanh_pho")
+  quanHuyen     String   @map("quan_huyen")
+  phuongXa      String   @map("phuong_xa")
+  loiNhan       String?  @map("loi_nhan") // Lời nhắn của bạn
+  trangThai     String   @default("cho_duyet") @map("trang_thai") // cho_duyet, da_duyet, tu_choi
+  ghiChu        String?  @map("ghi_chu") // Ghi chú của admin
+  taoLuc        DateTime @default(now()) @map("tao_luc")
+  capNhatLuc    DateTime @updatedAt @map("cap_nhat_luc")
+
+  @@map("dai_ly_phan_phoi")
+}
+
+model LienHe {
+  id          Int      @id @default(autoincrement())
+  ten         String
+  soDienThoai String   @map("so_dien_thoai")
+  email       String?
+  loai        String   @map("loai")
+  moTa        String?  @map("mo_ta")
+  thuTu       Int      @default(0) @map("thu_tu")
+  trangThai   String   @default("hoat_dong") @map("trang_thai")
+  taoLuc      DateTime @default(now()) @map("tao_luc")
+  capNhatLuc  DateTime @updatedAt @map("cap_nhat_luc")
+
+  @@map("lien_he")
+}
+
+// prisma/schema.prisma
+
+model SocialMedia {
+  id           Int      @id @default(autoincrement())
+  tenMangXaHoi String   @map("ten_mang_xa_hoi") // Facebook, Youtube, Shopee, v.v.
+  url          String // Link đến trang mạng xã hội
+  icon         String // Tên icon
+  thuTu        Int      @default(0) @map("thu_tu") // Thứ tự hiển thị
+  trangThai    String   @default("hien_thi") @map("trang_thai") // hien_thi, an_di
+  taoLuc       DateTime @default(now()) @map("tao_luc")
+  capNhatLuc   DateTime @updatedAt @map("cap_nhat_luc")
+
+  @@map("social_media")
+}

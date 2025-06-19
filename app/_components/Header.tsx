@@ -61,6 +61,8 @@ export default function Header() {
             .trim();
     };
 
+
+
     useEffect(() => {
         // Tạo menu mặc định trước
         const defaultMenuItems: MenuItem[] = [
@@ -75,14 +77,8 @@ export default function Header() {
             },
             {
                 label: "SẢN PHẨM & DỊCH VỤ",
-                href: "/pages/sanphamvadichvu",
-                children: [
-                    // Fallback menu khi API lỗi
-                    { label: "Tất cả sản phẩm", href: "/pages/sanphamvadichvu" },
-                    { label: "Thuốc kê đơn", href: "/pages/sanphamvadichvu?category=thuoc-ke-don" },
-                    { label: "Thuốc không kê đơn", href: "/pages/sanphamvadichvu?category=thuoc-khong-ke-don" },
-                    { label: "Thực phẩm chức năng", href: "/pages/sanphamvadichvu?category=thuc-pham-chuc-nang" },
-                ]
+                href: "/pages/sanphamvadichvu?category=all",
+
             },
             { label: "CHỨNG NHẬN", href: "/pages/chungnhan" },
             { label: "TIN TỨC", href: "/pages/tintuc" },
@@ -95,7 +91,7 @@ export default function Header() {
             // Nếu có API data, tạo menu động
             const productChildren = danhMucs.map(dm => ({
                 label: dm.tenDanhMuc,
-                href: `/pages/sanphamvadichvu?category=${createSlug(dm.tenDanhMuc)}`
+                href: `/pages/sanphamvadichvu?category=${createSlug(dm.tenDanhMuc)}&id=${dm.id}`
             }));
 
             const dynamicMenuItems: MenuItem[] = [
@@ -110,9 +106,8 @@ export default function Header() {
                 },
                 {
                     label: "SẢN PHẨM & DỊCH VỤ",
-                    href: "/pages/sanphamvadichvu",
+                    href: "/pages/sanphamvadichvu?category=all",
                     children: [
-                        { label: "Tất cả sản phẩm", href: "/pages/sanphamvadichvu" },
                         ...productChildren // Thêm categories từ API
                     ]
                 },

@@ -156,12 +156,28 @@ function ProductsPageContent() {
     }, [selectedCategory, searchTerm]);
 
     useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        const categoryId = searchParams.get('id');
+
         if (categoryParam && danhMucs.length > 0) {
+            if (categoryId) {
+                // Tìm theo ID trước (chính xác hơn)
+                const validCategory = danhMucs.find(dm => dm.id === parseInt(categoryId));
+                if (validCategory) {
+                    setSelectedCategory(validCategory.id);
+                    return;
+                }
+            }
+
+            // Fallback: tìm theo slug
             const validCategory = danhMucs.find(dm =>
                 dm.tenDanhMuc.toLowerCase().replace(/\s+/g, '-') === categoryParam
             );
             if (validCategory) {
                 setSelectedCategory(validCategory.id);
+            } else {
+                // Nếu không có category param, reset về "Tất cả sản phẩm"
+                setSelectedCategory('all');
             }
         }
     }, [categoryParam, danhMucs]);

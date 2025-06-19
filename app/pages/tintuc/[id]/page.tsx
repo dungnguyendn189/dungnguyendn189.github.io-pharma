@@ -46,7 +46,7 @@ export default function NewsDetailPage() {
                     ${tieuDe.length > 50 ? tieuDe.substring(0, 50) + '...' : tieuDe}
                 </text>
                 <text x="400" y="350" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="14">
-                    EQ Pharma News
+                    Dược Aphar CM News
                 </text>
             </svg>
         `)}`;
@@ -253,11 +253,11 @@ export default function NewsDetailPage() {
                             <div className="p-6 bg-gray-50 border-t">
                                 <div className="text-center">
                                     <p className="text-gray-700 mb-2">
-                                        🏢 <strong>CÔNG TY CỔ PHẦN DƯỢC PHẨM EQ PHARMA</strong>
+                                        🏢 <strong>CÔNG TY CỔ PHẦN DƯỢC PHẨM Dược Aphar CM</strong>
                                     </p>
                                     <p className="text-gray-700">
-                                        📞 Hotline: <strong>0964.172.803</strong> |
-                                        ✉️ Email: <strong>eq01pharma@gmail.com</strong>
+                                        📞 Hotline: <strong>0376640406</strong> |
+                                        ✉️ Email: <strong>apharcm1709@gmail.com</strong>
                                     </p>
                                 </div>
                             </div>
@@ -308,8 +308,8 @@ export default function NewsDetailPage() {
                             <div className="mt-6 pt-4 border-t">
                                 <h4 className="font-medium text-gray-800 mb-3">Liên hệ tư vấn</h4>
                                 <div className="space-y-2 text-sm text-gray-600">
-                                    <p>📞 <strong>0964.172.803</strong></p>
-                                    <p>✉️ eq01pharma@gmail.com</p>
+                                    <p>📞 <strong>0376640406</strong></p>
+                                    <p>✉️ apharcm1709@gmail.com</p>
                                     <p>🌐 https://eqpharma.vn</p>
                                 </div>
 

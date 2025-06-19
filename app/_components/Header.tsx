@@ -167,7 +167,7 @@ export default function Header() {
                     {/* Logo */}
                     <Link className="flex items-center gap-4" href="/">
                         <Image src={logo} width={48} height={48} alt="Logo" className="cursor-pointer" />
-                        <span className="hidden md:block font-bold">CÔNG TY CỔ PHẦN DƯỢC PHẨM EQ PHARMA</span>
+                        <span className="hidden md:block font-bold">Dược Aphar CM </span>
                     </Link>
 
                     {/* Mobile controls */}

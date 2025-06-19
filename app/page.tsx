@@ -12,7 +12,9 @@ import FooterHome from "./_components/FooterHome";
 export default function Home() {
   return (
     <div className="w-full">
-      <Banner />
+      <div className="max-w-7xl mx-auto py-8">
+        <Banner />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 max-w-7xl mx-auto gap-6 py-4 px-4">
         <div className="max-h-[330px]">
           <Image
@@ -22,8 +24,8 @@ export default function Home() {
           />
         </div>
         <Title
-          title="Giới thiệu về EQ PHARMA"
-          description="Tự hào là một trong những đơn vị dược phẩm uy tín trên thị trường Việt Nam hiện nay, Công ty cổ phần dược phẩm EQ PHARMA là lựa chọn tin cậy của nhiều đối tác và người tiêu dùng. Các sản phẩm của EQ PHARMA mang đến sứ mệnh chăm sóc bảo vệ sức khỏe cho trẻ em, người già, phụ nữ và nam giới – với chất lượng vượt trội và giá thành phù hợp cho mọi gia đình. Với khát khao sẽ trở thành công ty hàng đầu trong ngành Dược – TPCN, TPBVSK, EQ PHARMA luôn nỗ lực hết mình với phương châm “LUÔN TỐT HƠN” !"
+          title="Giới thiệu về Dược Aphar CM "
+          description="Tự hào là một trong những đơn vị dược phẩm uy tín trên thị trường Việt Nam hiện nay, Công ty cổ phần dược phẩm Dược Aphar CM  là lựa chọn tin cậy của nhiều đối tác và người tiêu dùng. Các sản phẩm của Dược Aphar CM  mang đến sứ mệnh chăm sóc bảo vệ sức khỏe cho trẻ em, người già, phụ nữ và nam giới – với chất lượng vượt trội và giá thành phù hợp cho mọi gia đình. Với khát khao sẽ trở thành công ty hàng đầu trong ngành Dược – TPCN, TPBVSK, Dược Aphar CM  luôn nỗ lực hết mình với phương châm “LUÔN TỐT HƠN” !"
           align="left"
           titleColor="text-green-500"
           showBorder={true}
@@ -34,9 +36,9 @@ export default function Home() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 max-w-7xl  mx-auto gap-6 py-4 px-4">
         <Title
-          title="Giới thiệu về EQ PHARMA"
+          title="Giới thiệu về Dược Aphar CM "
           image={city2.src}
-          description="Tự hào là một trong những đơn vị dược phẩm uy tín trên thị trường Việt Nam hiện nay, Công ty cổ phần dược phẩm EQ PHARMA là lựa chọn tin cậy của nhiều đối tác và người tiêu dùng. Các sản phẩm của EQ PHARMA mang đến sứ mệnh chăm sóc bảo vệ sức khỏe cho trẻ em, người già, phụ nữ và nam giới – với chất lượng vượt trội và giá thành phù hợp cho mọi gia đình. Với khát khao sẽ trở thành công ty hàng đầu trong ngành Dược – TPCN, TPBVSK, EQ PHARMA luôn nỗ lực hết mình với phương châm “LUÔN TỐT HƠN” !"
+          description="Tự hào là một trong những đơn vị dược phẩm uy tín trên thị trường Việt Nam hiện nay, Công ty cổ phần dược phẩm Dược Aphar CM  là lựa chọn tin cậy của nhiều đối tác và người tiêu dùng. Các sản phẩm của Dược Aphar CM  mang đến sứ mệnh chăm sóc bảo vệ sức khỏe cho trẻ em, người già, phụ nữ và nam giới – với chất lượng vượt trội và giá thành phù hợp cho mọi gia đình. Với khát khao sẽ trở thành công ty hàng đầu trong ngành Dược – TPCN, TPBVSK, Dược Aphar CM  luôn nỗ lực hết mình với phương châm “LUÔN TỐT HƠN” !"
           align="left"
           titleColor="text-green-500"
           showBorder={true}

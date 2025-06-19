@@ -173,7 +173,7 @@ const CoreValuesSection = () => (
                     <div className="h-1 bg-amber-500 w-12 ml-4"></div>
                 </div>
                 <p className="text-gray-600 text-lg max-w-4xl mx-auto">
-                    EQ PHARMA thực hiện sứ mệnh của mình bằng việc duy trì 4 giá trị cốt lõi (4T & 1C)
+                    Dược Aphar CM thực hiện sứ mệnh của mình bằng việc duy trì 4 giá trị cốt lõi (4T & 1C)
                 </p>
             </div>
 

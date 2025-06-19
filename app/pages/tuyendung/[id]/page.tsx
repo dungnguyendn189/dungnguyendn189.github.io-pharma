@@ -350,12 +350,12 @@ export default function RecruitmentDetailPage() {
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                             <div>
-                                                <p className="text-gray-600 mb-2">🏢 <strong>CÔNG TY CỔ PHẦN DƯỢC PHẨM EQ PHARMA</strong></p>
-                                                <p className="text-gray-600 mb-2">📍 Địa chỉ: Lô G6, Tầng 6, Tòa Nhà Việt Á, Số 9 Phố Duy Tân, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội</p>
+                                                <p className="text-gray-600 mb-2">🏢 <strong>DƯỢC APHAR CM</strong></p>
+                                                <p className="text-gray-600 mb-2">📍 80/31/15, Đường Dương Quảng Hàm, Phường 5, Quận Gò Vấp, TP HCM, VN</p>
                                             </div>
                                             <div>
-                                                <p className="text-gray-600 mb-2">📞 Hotline: <strong className="text-green-600">0964.172.803</strong></p>
-                                                <p className="text-gray-600 mb-2">✉️ Email: <strong className="text-blue-600">eq01pharma@gmail.com</strong></p>
+                                                <p className="text-gray-600 mb-2">📞 Hotline: <strong className="text-green-600">0376640406</strong></p>
+                                                <p className="text-gray-600 mb-2">✉️ Email: <strong className="text-blue-600">apharcm1709@gmail.com</strong></p>
                                                 <p className="text-gray-600">🌐 Website: <strong className="text-blue-600">https://eqpharma.vn</strong></p>
                                             </div>
                                         </div>

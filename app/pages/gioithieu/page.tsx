@@ -9,7 +9,7 @@ export default function GioiThieu() {
                 <div className="relative max-h-[700px] w-full h-[500px]">
                     <Image
                         src="/introduct/1.png" // Đặt đúng đường dẫn đến hình ảnh tòa nhà
-                        alt="Tòa nhà EQ Pharma"
+                        alt="Tòa nhà Dược Aphar CM"
                         fill
                         className="object-cover rounded-lg"
                     />
@@ -25,19 +25,19 @@ export default function GioiThieu() {
                     <div className="space-y-4 text-gray-700">
                         <p>
                             Tự hào là một trong những đơn vị dược phẩm uy tín trên thị trường Việt Nam
-                            hiện nay, Công ty cổ phần dược phẩm <span className="font-bold">EQ PHARMA</span> là lựa chọn tin cậy của
+                            hiện nay, Công ty cổ phần dược phẩm <span className="font-bold">Dược Aphar CM</span> là lựa chọn tin cậy của
                             nhiều đối tác và người tiêu dùng.
                         </p>
 
                         <p>
-                            Các sản phẩm của <span className="font-bold">EQ PHARMA</span> mang đến sứ mệnh chăm sóc bảo vệ sức khỏe
+                            Các sản phẩm của <span className="font-bold">Dược Aphar CM</span> mang đến sứ mệnh chăm sóc bảo vệ sức khỏe
                             cho trẻ em, người già, phụ nữ và nam giới – <span className="font-bold">với chất lượng vượt trội và giá
                                 thành phù hợp cho mọi gia đình</span>.
                         </p>
 
                         <p>
                             Với khát khao sẽ trở thành công ty hàng đầu trong ngành <span className="font-bold">Dược – TPCN,
-                                TPBVSK, EQ PHARMA</span> luôn nỗ lực hết mình với phương châm <span className="font-bold">&ldquo;LUÔN TỐT
+                                TPBVSK, Dược Aphar CM</span> luôn nỗ lực hết mình với phương châm <span className="font-bold">&ldquo;LUÔN TỐT
                                     HƠN&ldquo;</span> !
                         </p>
 
@@ -47,7 +47,7 @@ export default function GioiThieu() {
                             đồng thời, các sản phẩm được sản xuất tại nhà máy trang bị đầy chuyên sản
                             xuất hiện đại, khép kín, tuân thủ nghiêm ngặt theo Tiêu chuẩn GMP của Bộ Y tế,
                             hệ thống Quản lý chất lượng ISO 13485:2016, hệ thống Quản lý an toàn thực
-                            phẩm ISO 22000: 2018, điều này giúp EQ PHARMA cung cấp cho khách hàng
+                            phẩm ISO 22000: 2018, điều này giúp Dược Aphar CM cung cấp cho khách hàng
                             nhiều dòng sản phẩm thực phẩm chức năng, thực phẩm bảo vệ sức khỏe, thực
                             phẩm bổ sung, mỹ phẩm, vật tư y tế, chiết xuất dược liệu chất lượng cao được
                             kết hợp giữa y học cổ truyền và công nghệ hiện đại, đóng góp 1 phần vào công
@@ -67,7 +67,7 @@ export default function GioiThieu() {
                         100% sản phẩm công ty cam kết kiểm soát chất lượng và tuân thủ theo các quy định nhà máy
                         đạt tiêu chuẩn GMP, ISO. Hệ thống nhà máy, trang bị đầy chuyên sản xuất hiện đại, khép kín,
                         tuân thủ nghiêm ngặt theo Tiêu chuẩn GMP, hệ thống Quản lý chất lượng ISO 13485:2016, hệ
-                        thống Quản lý an toàn thực phẩm ISO 22000:2018, điều này giúp EQ Pharma cung cấp cho
+                        thống Quản lý an toàn thực phẩm ISO 22000:2018, điều này giúp Dược Aphar CM cung cấp cho
                         khách hàng nhiều dòng sản phẩm chất lượng bảo vệ sức khỏe, mỹ phẩm, vật tư y tế, chiết xuất
                         dược liệu chất lượng.
                     </p>
@@ -171,7 +171,7 @@ export default function GioiThieu() {
                         Sản phẩm thân thuộc của người Việt
                     </h2>
                     <p className="text-gray-700 mb-4">
-                        Nhiều sản phẩm của EQ Pharma đã trở thành thuốc và vị thuốc Việt rất quen thuộc: Bổ Khớp NewJoint TTPHA, Siro ho LAPCOUGH, Canxi Caneq Plus, Bổ não Ginkgo Smart, Dạ dày EQ, Canxi Bones...
+                        Nhiều sản phẩm của Dược Aphar CM đã trở thành thuốc và vị thuốc Việt rất quen thuộc: Bổ Khớp NewJoint TTPHA, Siro ho LAPCOUGH, Canxi Caneq Plus, Bổ não Ginkgo Smart, Dạ dày EQ, Canxi Bones...
                     </p>
                     <div className="bg-green-700 text-white rounded-full py-3 px-6 inline-flex items-center space-x-2">
                         <span className="text-2xl font-bold">100+</span>

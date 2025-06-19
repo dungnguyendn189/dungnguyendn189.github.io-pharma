@@ -134,7 +134,7 @@ export default function TuyenDung() {
                     ${tieuDe.length > 40 ? tieuDe.substring(0, 40) + '...' : tieuDe}
                 </text>
                 <text x="200" y="230" text-anchor="middle" fill="#16a34a" font-family="Arial" font-size="10">
-                    EQ Pharma Careers
+                    Aphar CM Careers
                 </text>
             </svg>
         `)}`;
@@ -191,7 +191,7 @@ export default function TuyenDung() {
             <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4 text-green-600">TUYỂN DỤNG</h2>
                 <p className="text-gray-600 mb-6">
-                    Cơ hội nghề nghiệp tại EQ Pharma - Nơi phát triển sự nghiệp của bạn
+                    Cơ hội nghề nghiệp tại Dược Aphar CM - Nơi phát triển sự nghiệp của bạn
                 </p>
 
                 {/* Search */}

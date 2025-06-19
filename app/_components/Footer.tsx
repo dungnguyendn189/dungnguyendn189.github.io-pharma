@@ -18,13 +18,12 @@ export default function Footer() {
                         <div className="mb-3">
                             <Image
                                 src="/logo.png"
-                                alt="EQ Pharma Logo"
+                                alt="Dược Aphar CM Logo"
                                 width={120}
                                 height={120}
                             />
                         </div>
-                        <h3 className="font-bold text-sm uppercase mb-1">CÔNG TY CỔ PHẦN</h3>
-                        <h3 className="font-bold text-sm uppercase">DƯỢC PHẨM EQ PHARMA</h3>
+                        <h3 className="font-bold text-sm uppercase">DƯỢC PHẨM Dược Aphar CM</h3>
                     </div>
 
                     {/* Thông tin liên hệ */}
@@ -33,15 +32,16 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm">
                             <li>
                                 <span className="font-semibold">Địa chỉ: </span>
-                                Tầng 6, Số 9 Phố Duy Tân, Cầu Giấy, Hà Nội.
+                                80/31/15, Đường Dương Quảng Hàm, Phường 5, Quận Gò Vấp, TP HCM, VN
+
                             </li>
                             <li>
                                 <span className="font-semibold">Hotline: </span>
-                                <a href="tel:0935489429" className="hover:text-green-600">0935489429</a>
+                                <a href="tel:0376640406" className="hover:text-green-600">0376640406</a>
                             </li>
                             <li>
                                 <span className="font-semibold">Email: </span>
-                                <a href="mailto:eq01pharma@gmail.com" className="hover:text-green-600">eq01pharma@gmail.com</a>
+                                <a href="apharcm1709@gmail.com" className="hover:text-green-600">apharcm1709@gmail.com</a>
                             </li>
                             <li>
                                 <span className="font-semibold">Website: </span>
@@ -55,7 +55,7 @@ export default function Footer() {
                         <div>
                             <h3 className="text-lg font-bold uppercase mb-4">LIÊN KẾT NHANH</h3>
                             <ul className="space-y-2 text-sm">
-                                <li><Link href="/pages/gioithieu" className="hover:text-green-600">Về EQ Pharma</Link></li>
+                                <li><Link href="/pages/gioithieu" className="hover:text-green-600">Về Dược Aphar CM</Link></li>
                                 <li><Link href="/pages/sanphamvadichvu" className="hover:text-green-600">Sản phẩm</Link></li>
                                 <li><Link href="/pages/chungnhan" className="hover:text-green-600">Chứng nhận</Link></li>
                                 <li><Link href="/pages/dailyphanphoi" className="hover:text-green-600">Đại lý phân phối</Link></li>
@@ -82,7 +82,7 @@ export default function Footer() {
 
                 {/* Disclaimer - Thông báo ở dưới cùng */}
                 <div className="mt-8 pt-4 border-t border-gray-200 text-xs text-center text-gray-500 italic">
-                    <p>EQ Pharma cam kết chỉ giới thiệu sản phẩm đã được công bố tại Cục An Toàn Thực Phẩm - Bộ Y Tế. Thông tin trên website mang tính tham khảo, không thay thế tư vấn y khoa hoặc điều trị cá nhân.</p>
+                    <p>Dược Aphar CM cam kết chỉ giới thiệu sản phẩm đã được công bố tại Cục An Toàn Thực Phẩm - Bộ Y Tế. Thông tin trên website mang tính tham khảo, không thay thế tư vấn y khoa hoặc điều trị cá nhân.</p>
                 </div>
 
                 {/* Back to top button */}
@@ -102,7 +102,7 @@ export default function Footer() {
             {/* Fixed contact buttons */}
             <div className="fixed right-4 bottom-4 flex flex-col space-y-3 z-50">
                 {/* Messenger chat button */}
-                <a href="#" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600">
+                <a href="https://zalo.me/0376640406" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600">
                     <Image
                         src="/socialIcon/zalo.png"
                         alt="Zalo"

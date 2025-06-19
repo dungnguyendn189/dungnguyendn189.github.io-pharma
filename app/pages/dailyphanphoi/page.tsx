@@ -192,7 +192,7 @@ export default function DangKyDaiLyPage() {
                             Đăng ký làm đại lý phân phối
                         </h1>
                         <p className="mt-1 text-sm text-gray-600">
-                            Tham gia hệ thống phân phối dược phẩm EQ Pharma
+                            Tham gia hệ thống phân phối dược phẩm Dược Aphar CM
                         </p>
                     </div>
                 </div>

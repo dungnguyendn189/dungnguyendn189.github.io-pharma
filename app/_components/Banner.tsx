@@ -21,9 +21,6 @@ interface BannerItem {
 export default function Banner() {
     const banners: BannerItem[] = [
         { id: 1, image: '/banner1.png', link: '/pages/sanphamvadichvu', alt: 'Banner 1', aspectRatio: '16/9' },
-        { id: 2, image: '/banner2.png', link: '/pages/sanphamvadichvu', alt: 'Banner 2', aspectRatio: '16/9' },
-        { id: 3, image: '/banner3.png', link: '/pages/sanphamvadichvu', alt: 'Banner 3', aspectRatio: '16/9' },
-        { id: 4, image: '/banner4.png', link: '/pages/sanphamvadichvu', alt: 'Banner 4', aspectRatio: '16/9' },
     ]
 
     const [mounted, setMounted] = useState(false);

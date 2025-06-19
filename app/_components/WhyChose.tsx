@@ -31,7 +31,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Sản phẩm chất lượng – Đạt chuẩn quốc tế</h3>
                     <p className="text-gray-700 text-center">
-                        Mọi sản phẩm của EQ Pharma đều được sản xuất trên dây chuyền hiện đại, đạt tiêu chuẩn GMP, ISO 13485:2016 và ISO 22000:2018. Chúng tôi cam kết mang đến các sản phẩm an toàn, hiệu quả, đáp ứng nhu cầu chăm sóc sức khỏe toàn diện.
+                        Mọi sản phẩm của Dược Aphar CM đều được sản xuất trên dây chuyền hiện đại, đạt tiêu chuẩn GMP, ISO 13485:2016 và ISO 22000:2018. Chúng tôi cam kết mang đến các sản phẩm an toàn, hiệu quả, đáp ứng nhu cầu chăm sóc sức khỏe toàn diện.
                     </p>
                 </div>
 
@@ -48,7 +48,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Công thức độc quyền – Hiệu quả vượt trội</h3>
                     <p className="text-gray-700 text-center">
-                        EQ Pharma tiên phong nghiên cứu, phát triển các công thức sản phẩm tối ưu, kết hợp tinh hoa y học cổ truyền và công nghệ hiện đại. Thành phần hàm lượng cao giúp phát huy tác dụng nhanh chóng, mang lại kết quả bền vững.
+                        Dược Aphar CM tiên phong nghiên cứu, phát triển các công thức sản phẩm tối ưu, kết hợp tinh hoa y học cổ truyền và công nghệ hiện đại. Thành phần hàm lượng cao giúp phát huy tác dụng nhanh chóng, mang lại kết quả bền vững.
                     </p>
                 </div>
 
@@ -85,7 +85,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Dịch vụ khách hàng tận tâm, chuyên nghiệp</h3>
                     <p className="text-gray-700 text-center">
-                        EQ Pharma luôn đồng hành cùng khách hàng, cung cấp dịch vụ tư vấn kịp thời, hỗ trợ nhanh chóng từ khi mua hàng đến sau khi sử dụng. Chúng tôi đặt trải nghiệm của khách hàng lên hàng đầu, cam kết sự hài lòng tối đa.
+                        Dược Aphar CM luôn đồng hành cùng khách hàng, cung cấp dịch vụ tư vấn kịp thời, hỗ trợ nhanh chóng từ khi mua hàng đến sau khi sử dụng. Chúng tôi đặt trải nghiệm của khách hàng lên hàng đầu, cam kết sự hài lòng tối đa.
                     </p>
                 </div>
 
@@ -102,7 +102,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Hệ thống phân phối rộng khắp</h3>
                     <p className="text-gray-700 text-center">
-                        Với mạng lưới phân phối phủ rộng khắp các tỉnh thành, sản phẩm EQ Pharma có mặt tại các nhà thuốc, phòng khám và kênh bán hàng trực tuyến, đảm bảo khách hàng dễ dàng tiếp cận và mua sản phẩm chính hãng một cách thuận tiện.
+                        Với mạng lưới phân phối phủ rộng khắp các tỉnh thành, sản phẩm Dược Aphar CM có mặt tại các nhà thuốc, phòng khám và kênh bán hàng trực tuyến, đảm bảo khách hàng dễ dàng tiếp cận và mua sản phẩm chính hãng một cách thuận tiện.
                     </p>
                 </div>
 
@@ -119,7 +119,7 @@ export default function WhyChose() {
                     </div>
                     <h3 className="text-xl font-semibold text-center mb-3">Cam kết trách nhiệm với cộng đồng</h3>
                     <p className="text-gray-700 text-center">
-                        Không chỉ cung cấp sản phẩm chất lượng, EQ Pharma còn thực hiện nhiều chương trình vì sức khỏe cộng đồng, nâng cao nhận thức về chăm sóc sức khỏe, khẳng định sứ mệnh &quot;LUÔN TỐT HƠN&quot; trong từng sản phẩm và dịch vụ.
+                        Không chỉ cung cấp sản phẩm chất lượng, Dược Aphar CM còn thực hiện nhiều chương trình vì sức khỏe cộng đồng, nâng cao nhận thức về chăm sóc sức khỏe, khẳng định sứ mệnh &quot;LUÔN TỐT HƠN&quot; trong từng sản phẩm và dịch vụ.
                     </p>
                 </div>
             </div>

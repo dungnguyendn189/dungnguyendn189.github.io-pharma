@@ -3,6 +3,8 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
+
 import Link from 'next/link';
 
 interface DanhMuc {
@@ -40,6 +42,15 @@ export default function ProductDetailPage() {
     const [relatedProducts, setRelatedProducts] = useState<Thuoc[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter()
+
+    const handleContactClick = () => {
+        router.push('/pages/thongtinlienhe') // Chuyển đến trang liên hệ
+    }
+
+    const handleCallClick = () => {
+        window.open('tel:0376640406', '_self') // Mở ứng dụng gọi điện
+    }
 
 
     // Fetch chi tiết thuốc
@@ -111,7 +122,7 @@ export default function ProductDetailPage() {
                     ${tenThuoc.length > 25 ? tenThuoc.substring(0, 25) + '...' : tenThuoc}
                 </text>
                 <text x="200" y="250" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="12">
-                    Sản phẩm EQ Pharma
+                    Sản phẩm Dược Aphar CM
                 </text>
             </svg>
         `)}`;
@@ -204,7 +215,7 @@ export default function ProductDetailPage() {
             <div className="bg-green-600 text-white py-2">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center text-sm">
-                        <div>Hotline: 0964.172.803 | Email: eq01pharma@gmail.com</div>
+                        <div>Hotline: 0376640406 | Email: apharcm1709@gmail.com</div>
                         <div className="flex gap-4">
                             <span>VN</span>
                             <span>EN</span>
@@ -408,11 +419,18 @@ export default function ProductDetailPage() {
 
                             <div className="text-center">
                                 <div className="space-y-2">
-                                    <button className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                                    <button
+                                        onClick={handleContactClick}
+                                        className="w-full bg-green-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-green-700 transition-colors"
+                                    >
                                         LIÊN HỆ MUA HÀNG
                                     </button>
-                                    <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                                        GỌI TƯ VẤN: 0964.172.803
+
+                                    <button
+                                        onClick={handleCallClick}
+                                        className="w-full bg-blue-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-700 transition-colors"
+                                    >
+                                        GỌI TƯ VẤN: 0376640406
                                     </button>
                                 </div>
                             </div>

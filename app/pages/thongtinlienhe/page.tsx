@@ -32,18 +32,78 @@ export default function ThongTinLienHe() {
         }));
     };
 
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setIsSubmitting(true);
+    //     setSubmitStatus({ type: null, message: '' });
+
+    //     try {
+    //         const response = await fetch('/api/lienhe', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(formData)
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (data.success) {
+    //             setSubmitStatus({
+    //                 type: 'success',
+    //                 message: 'Gửi thông tin liên hệ thành công! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.'
+    //             });
+    //             // Reset form
+    //             setFormData({
+    //                 hoTen: "",
+    //                 email: "",
+    //                 soDienThoai: "",
+    //                 noiDung: "",
+    //                 loai: "tu_van"
+    //             });
+    //         } else {
+    //             setSubmitStatus({
+    //                 type: 'error',
+    //                 message: data.message || 'Có lỗi xảy ra khi gửi thông tin'
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error submitting form:', error);
+    //         setSubmitStatus({
+    //             type: 'error',
+    //             message: 'Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại.'
+    //         });
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         setSubmitStatus({ type: null, message: '' });
 
         try {
-            const response = await fetch('/api/lienhe', {
+            // Tạo FormData để gửi qua Web3Forms
+            const formDataToSend = new FormData();
+            formDataToSend.append('access_key', '9a9dd9f8-0324-4c10-95f5-a4fe7c909c50'); // Thay bằng access key thật
+            formDataToSend.append('subject', `📞 Liên hệ mới từ Pharma App - ${formData.loai}`);
+            formDataToSend.append('from_name', formData.hoTen);
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('message', `
+    Loại liên hệ: ${formData.loai}
+    Họ tên: ${formData.hoTen}
+    Email: ${formData.email}
+    Số điện thoại: ${formData.soDienThoai}
+    Thời gian: ${new Date().toLocaleString('vi-VN')}
+    
+    Nội dung:
+    ${formData.noiDung}
+            `);
+
+            // Gửi qua Web3Forms
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+                body: formDataToSend
             });
 
             const data = await response.json();
@@ -64,7 +124,7 @@ export default function ThongTinLienHe() {
             } else {
                 setSubmitStatus({
                     type: 'error',
-                    message: data.message || 'Có lỗi xảy ra khi gửi thông tin'
+                    message: 'Có lỗi xảy ra khi gửi thông tin'
                 });
             }
         } catch (error) {
@@ -77,7 +137,6 @@ export default function ThongTinLienHe() {
             setIsSubmitting(false);
         }
     };
-
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             {/* Header */}

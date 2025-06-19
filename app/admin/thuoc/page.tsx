@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -63,6 +64,7 @@ export default function QuanLyThuocPage() {
     const [categoryFilter, setCategoryFilter] = useState('all')
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
+
 
     const [formData, setFormData] = useState<FormData>({
         tenThuoc: '',
@@ -278,15 +280,18 @@ export default function QuanLyThuocPage() {
                             >
                                 ← Dashboard
                             </button>
-                            <button
-                                onClick={() => {
-                                    resetForm()
-                                    setShowModal(true)
-                                }}
-                                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                            >
-                                + Thêm thuốc
-                            </button>
+                            {/* Chỉ hiện button khi có danh mục */}
+                            {danhMucs.length > 0 && (
+                                <button
+                                    onClick={() => {
+                                        resetForm()
+                                        setShowModal(true)
+                                    }}
+                                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                >
+                                    + Thêm thuốc
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

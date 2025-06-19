@@ -103,7 +103,7 @@ export default function Footer() {
             <div className="fixed right-4 bottom-4 flex flex-col space-y-3 z-50">
                 {/* Messenger chat button */}
                 <a href="#" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600">
-                    <img src="http://localhost:3000/_next/image?url=%2Fsocialicon%2Fzalo.png&w=32&q=75" alt="Zalo" />
+                    <img src="/socialIcon/zalo.png" alt="Zalo" />
                 </a>
                 {/* Phone call button */}
                 <a href="tel:0935489429" className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600">

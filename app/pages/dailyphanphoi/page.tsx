@@ -111,20 +111,44 @@ export default function DangKyDaiLyPage() {
         setMessage({ type: '', content: '' })
 
         try {
-            const response = await fetch('/api/dailyphanphoi', {
+            const formDataToSend = new FormData()
+            formDataToSend.append('access_key', '9a9dd9f8-0324-4c10-95f5-a4fe7c909c50') // 🔥 THAY BẰNG ACCESS KEY THẬT
+            formDataToSend.append('subject', `🏢 Đăng ký đại lý mới - ${formData.noiDungDangKy}`)
+            formDataToSend.append('from_name', formData.hoTen)
+            formDataToSend.append('email', formData.email)
+            formDataToSend.append('message', `
+    THÔNG TIN ĐĂNG KÝ ĐẠI LÝ PHÂN PHỐI
+    
+    👤 Thông tin cá nhân:
+    - Họ tên: ${formData.hoTen}
+    - Email: ${formData.email}
+    - Số điện thoại: ${formData.soDienThoai}
+    - Loại đăng ký: ${formData.noiDungDangKy}
+    
+    📍 Địa chỉ kinh doanh:
+    - Địa chỉ: ${formData.diaChi}
+    - Phường/Xã: ${formData.phuongXa}
+    - Quận/Huyện: ${formData.quanHuyen}
+    - Tỉnh/Thành phố: ${formData.tinhThanhPho}
+    
+    💬 Lời nhắn:
+    ${formData.loiNhan || 'Không có'}
+    
+    📅 Thời gian đăng ký: ${new Date().toLocaleString('vi-VN')}
+            `)
+
+            // Gửi qua Web3Forms
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
+                body: formDataToSend
+            });
 
             const data = await response.json()
 
             if (data.success) {
                 setMessage({
                     type: 'success',
-                    content: data.message || 'Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.'
+                    content: 'Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.'
                 })
 
                 // Reset form

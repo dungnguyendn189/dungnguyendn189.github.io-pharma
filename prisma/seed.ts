@@ -20,13 +20,12 @@ async function main() {
 
     if (!existingAdmin) {
         // Hash password 123456
-        const hashedPassword = await bcrypt.hash('123456', 10)
 
         // Tạo admin mặc định
         const admin = await prisma.admin.create({
             data: {
                 tenDangNhap: 'admin',
-                matKhau: hashedPassword,
+                matKhau: '123456',
                 email: 'admin@pharma.com',
                 hoTen: 'Administrator',
                 vaiTro: 'admin',

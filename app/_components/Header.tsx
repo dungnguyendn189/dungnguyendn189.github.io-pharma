@@ -61,16 +61,43 @@ export default function Header() {
             .trim();
     };
 
-    // Generate menu items từ danhMucs
     useEffect(() => {
+        // Tạo menu mặc định trước
+        const defaultMenuItems: MenuItem[] = [
+            { label: "TRANG CHỦ", href: "/" },
+            {
+                label: "GIỚI THIỆU",
+                href: "/pages/gioithieu",
+                children: [
+                    { label: "Về chúng tôi", href: "/pages/gioithieu" },
+                    { label: "Tầm nhìn sứ mệnh", href: "/pages/tamhinhsumenh" },
+                ]
+            },
+            {
+                label: "SẢN PHẨM & DỊCH VỤ",
+                href: "/pages/sanphamvadichvu",
+                children: [
+                    // Fallback menu khi API lỗi
+                    { label: "Tất cả sản phẩm", href: "/pages/sanphamvadichvu" },
+                    { label: "Thuốc kê đơn", href: "/pages/sanphamvadichvu?category=thuoc-ke-don" },
+                    { label: "Thuốc không kê đơn", href: "/pages/sanphamvadichvu?category=thuoc-khong-ke-don" },
+                    { label: "Thực phẩm chức năng", href: "/pages/sanphamvadichvu?category=thuc-pham-chuc-nang" },
+                ]
+            },
+            { label: "CHỨNG NHẬN", href: "/pages/chungnhan" },
+            { label: "TIN TỨC", href: "/pages/tintuc" },
+            { label: "ĐẠI LÝ NHÀ PHÂN PHỐI", href: "/pages/dailyphanphoi" },
+            { label: "TUYỂN DỤNG", href: "/pages/tuyendung" },
+            { label: "LIÊN HỆ", href: "/pages/thongtinlienhe" },
+        ];
+
         if (danhMucs.length > 0) {
-            // Tạo children cho "SẢN PHẨM & DỊCH VỤ"
+            // Nếu có API data, tạo menu động
             const productChildren = danhMucs.map(dm => ({
                 label: dm.tenDanhMuc,
                 href: `/pages/sanphamvadichvu?category=${createSlug(dm.tenDanhMuc)}`
             }));
 
-            // Tạo menu items với danh mục động
             const dynamicMenuItems: MenuItem[] = [
                 { label: "TRANG CHỦ", href: "/" },
                 {
@@ -84,7 +111,10 @@ export default function Header() {
                 {
                     label: "SẢN PHẨM & DỊCH VỤ",
                     href: "/pages/sanphamvadichvu",
-                    children: productChildren // SỬA: Dùng danh mục từ API
+                    children: [
+                        { label: "Tất cả sản phẩm", href: "/pages/sanphamvadichvu" },
+                        ...productChildren // Thêm categories từ API
+                    ]
                 },
                 { label: "CHỨNG NHẬN", href: "/pages/chungnhan" },
                 { label: "TIN TỨC", href: "/pages/tintuc" },
@@ -94,6 +124,9 @@ export default function Header() {
             ];
 
             setMenuItems(dynamicMenuItems);
+        } else {
+            // Nếu không có API data hoặc API lỗi, dùng menu mặc định
+            setMenuItems(defaultMenuItems);
         }
     }, [danhMucs]);
 
@@ -214,7 +247,7 @@ export default function Header() {
                                     href={item.href}
                                     className="text-white font-bold py-3 px-4 hover:underline flex items-center"
                                 >
-                                    <p className="text-xs lg:text-sm">{item.label}</p>
+                                    {item.label}
                                     {item.children && (
                                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />

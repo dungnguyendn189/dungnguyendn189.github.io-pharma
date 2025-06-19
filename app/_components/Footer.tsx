@@ -3,6 +3,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import zalo from '@/public/socialIcon/zalo.png';
 import SocialMediaLinks from './Social';
 
 export default function Footer() {
@@ -104,7 +105,7 @@ export default function Footer() {
                 {/* Messenger chat button */}
                 <a href="https://zalo.me/0376640406" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600">
                     <Image
-                        src="/socialIcon/zalo.png"
+                        src={zalo}
                         alt="Zalo"
                         width={24}
                         height={24}

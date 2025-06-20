@@ -57,22 +57,36 @@ export default function SocialMediaLinks() {
             <ul className="space-y-3">
                 {socialMedias.map((social) => (
                     <li key={social.id}>
-                        <a
-                            href={social.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center transition-colors"
-                        >
-                            <img
-                                src={social.icon}
-                                alt={social.tenMangXaHoi}
-                                width={24}
-                                height={24}
-                                className="mr-2"
+                        {social.tenMangXaHoi.toLocaleLowerCase() === "apharcm1709@gmail.com" ?
+                            <div
+                                rel="noopener noreferrer"
+                                className="flex items-center transition-colors "
+                            >
+                                <img
+                                    src={social.icon}
+                                    alt={social.tenMangXaHoi}
+                                    width={24}
+                                    height={24}
+                                    className="mr-2"
 
-                            />
-                            <span>{social.tenMangXaHoi}</span>
-                        </a>
+                                />
+                                <span>{social.tenMangXaHoi}</span>
+                            </div> : <a
+                                href={social.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center transition-colors hover:text-gray-500"
+                            >
+                                <img
+                                    src={social.icon}
+                                    alt={social.tenMangXaHoi}
+                                    width={24}
+                                    height={24}
+                                    className="mr-2"
+
+                                />
+                                <span>{social.tenMangXaHoi}</span>
+                            </a>}
                     </li>
                 ))}
             </ul>

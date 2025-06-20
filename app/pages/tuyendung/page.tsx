@@ -16,6 +16,7 @@ interface TuyenDung {
     loaiHinhLamViec: string;
     kinhNghiem: string;
     hanNop: string;
+    hinhAnh?: string; // ✅ Thêm field hinhAnh
     trangThai: string;
     taoLuc: string;
     luotXem?: number;
@@ -39,7 +40,7 @@ export default function TuyenDung() {
     const [pagination, setPagination] = useState<Pagination | null>(null);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-    // Fetch tuyển dụng từ API
+    // ✅ Fix fetchTuyenDungs để khớp với API response format
     const fetchTuyenDungs = async (page = 1, append = false) => {
         try {
             if (page === 1) setLoading(true);
@@ -58,22 +59,40 @@ export default function TuyenDung() {
             console.log('Fetching with params:', params.toString());
 
             const response = await fetch(`/api/tuyendung?${params}`);
-            const data = await response.json();
 
-            console.log('API Response:', data);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-            if (data.tuyenDungs) {
+            const result = await response.json();
+            console.log('API Response:', result);
+
+            // ✅ Check API response format
+            if (result.success && result.data) {
                 if (append) {
-                    setTuyenDungs(prev => [...prev, ...data.tuyenDungs]);
+                    setTuyenDungs(prev => [...prev, ...result.data]);
                 } else {
-                    setTuyenDungs(data.tuyenDungs);
+                    setTuyenDungs(result.data);
                 }
-                setPagination(data.pagination);
+                setPagination(result.pagination);
                 setCurrentPage(page);
+                setError(null);
+            } else {
+                // Handle API error response
+                console.error('API Error:', result.error);
+                setError(result.error || 'Không thể tải danh sách tuyển dụng');
+                if (!append) {
+                    setTuyenDungs([]);
+                    setPagination(null);
+                }
             }
         } catch (error) {
             console.error('Error fetching tuyen dungs:', error);
             setError('Có lỗi xảy ra khi tải thông tin tuyển dụng');
+            if (!append) {
+                setTuyenDungs([]);
+                setPagination(null);
+            }
         } finally {
             setLoading(false);
             setIsLoadingMore(false);
@@ -87,7 +106,7 @@ export default function TuyenDung() {
         }
     };
 
-    // Handle search
+    // Handle search with debounce
     const handleSearch = (value: string) => {
         setSearchTerm(value);
         setCurrentPage(1);
@@ -95,24 +114,51 @@ export default function TuyenDung() {
 
     // Format ngày tháng
     const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('vi-VN');
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        } catch {
+            return 'N/A';
+        }
     };
 
     // Check if deadline is near (within 7 days)
     const isDeadlineNear = (hanNop: string) => {
-        const deadline = new Date(hanNop);
-        const now = new Date();
-        const diffTime = deadline.getTime() - now.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays <= 7 && diffDays > 0;
+        try {
+            const deadline = new Date(hanNop);
+            const now = new Date();
+            const diffTime = deadline.getTime() - now.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 7 && diffDays > 0;
+        } catch {
+            return false;
+        }
     };
 
     // Check if deadline is passed
     const isDeadlinePassed = (hanNop: string) => {
-        const deadline = new Date(hanNop);
-        const now = new Date();
-        return deadline < now;
+        try {
+            const deadline = new Date(hanNop);
+            const now = new Date();
+            return deadline < now;
+        } catch {
+            return false;
+        }
+    };
+
+    // ✅ Improved image handling với hinhAnh từ database
+    const getJobImage = (item: TuyenDung) => {
+        // Nếu có hình ảnh từ database (base64 hoặc URL)
+        if (item.hinhAnh && item.hinhAnh.trim()) {
+            return item.hinhAnh;
+        }
+
+        // Fallback to placeholder
+        return getPlaceholderImage(item.tieuDe, item.viTri);
     };
 
     // Tạo placeholder image
@@ -140,10 +186,16 @@ export default function TuyenDung() {
         `)}`;
     };
 
+    // ✅ Debounce search effect
     useEffect(() => {
-        fetchTuyenDungs(1, false);
+        const timeoutId = setTimeout(() => {
+            fetchTuyenDungs(1, false);
+        }, 300); // 300ms delay
+
+        return () => clearTimeout(timeoutId);
     }, [searchTerm]);
 
+    // ✅ Better loading state
     if (loading && tuyenDungs.length === 0) {
         return (
             <section className="max-w-6xl mx-auto px-4 py-10">
@@ -165,7 +217,8 @@ export default function TuyenDung() {
         );
     }
 
-    if (error) {
+    // ✅ Better error state
+    if (error && tuyenDungs.length === 0) {
         return (
             <section className="max-w-6xl mx-auto px-4 py-10">
                 <div className="text-center">
@@ -176,7 +229,7 @@ export default function TuyenDung() {
                             setError(null);
                             fetchTuyenDungs(1, false);
                         }}
-                        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+                        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
                     >
                         Thử lại
                     </button>
@@ -207,6 +260,13 @@ export default function TuyenDung() {
                         <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
+
+                        {/* ✅ Loading indicator for search */}
+                        {loading && searchTerm && (
+                            <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                <div className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -224,7 +284,7 @@ export default function TuyenDung() {
                                 setSearchTerm('');
                                 setCurrentPage(1);
                             }}
-                            className="text-green-600 hover:underline flex items-center gap-1"
+                            className="text-green-600 hover:underline flex items-center gap-1 transition-colors"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -232,6 +292,24 @@ export default function TuyenDung() {
                             Xóa bộ lọc
                         </button>
                     )}
+                </div>
+            )}
+
+            {/* ✅ Show error message if loading failed but still have data */}
+            {error && tuyenDungs.length > 0 && (
+                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg mb-6">
+                    <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        <span>{error}</span>
+                        <button
+                            onClick={() => setError(null)}
+                            className="ml-auto text-yellow-600 hover:text-yellow-800"
+                        >
+                            ×
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -246,24 +324,29 @@ export default function TuyenDung() {
                                 className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer group"
                             >
                                 <div className="relative h-48">
+                                    {/* ✅ Better image handling */}
                                     <img
-                                        src={getPlaceholderImage(item.tieuDe, item.viTri)}
+                                        src={getJobImage(item)}
                                         alt={item.viTri}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        onError={(e) => {
+                                            // Fallback to placeholder if image fails to load
+                                            e.currentTarget.src = getPlaceholderImage(item.tieuDe, item.viTri);
+                                        }}
                                     />
 
                                     {/* Status badges */}
                                     <div className="absolute top-2 right-2 flex flex-col gap-1">
                                         {isDeadlinePassed(item.hanNop) ? (
-                                            <span className="bg-red-600 text-white px-2 py-1 rounded text-xs">
+                                            <span className="bg-red-600 text-white px-2 py-1 rounded text-xs font-medium shadow-sm">
                                                 Hết hạn
                                             </span>
                                         ) : isDeadlineNear(item.hanNop) ? (
-                                            <span className="bg-orange-600 text-white px-2 py-1 rounded text-xs">
+                                            <span className="bg-orange-600 text-white px-2 py-1 rounded text-xs font-medium shadow-sm">
                                                 Sắp hết hạn
                                             </span>
                                         ) : (
-                                            <span className="bg-green-600 text-white px-2 py-1 rounded text-xs">
+                                            <span className="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium shadow-sm">
                                                 Đang tuyển
                                             </span>
                                         )}
@@ -272,6 +355,13 @@ export default function TuyenDung() {
                                     <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
                                         Hạn: {formatDate(item.hanNop)}
                                     </div>
+
+                                    {/* ✅ View count if available */}
+                                    {item.luotXem !== undefined && item.luotXem > 0 && (
+                                        <div className="absolute bottom-2 right-2 bg-green-600 bg-opacity-80 text-white px-2 py-1 rounded text-xs">
+                                            Lượt xem: {item.luotXem}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="p-4">
@@ -285,12 +375,15 @@ export default function TuyenDung() {
                                         {item.viTri}
                                     </h3>
 
-                                    <p className="text-gray-600 text-sm mb-3 font-medium">
+                                    <p className="text-gray-600 text-sm mb-3 font-medium line-clamp-1">
                                         {item.tieuDe}
                                     </p>
 
                                     <p className="text-gray-600 text-sm mb-3 line-clamp-2 h-10">
-                                        {item.moTaCongViec.substring(0, 100) + '...'}
+                                        {item.moTaCongViec.length > 100
+                                            ? item.moTaCongViec.substring(0, 100) + '...'
+                                            : item.moTaCongViec
+                                        }
                                     </p>
 
                                     <div className="space-y-2 mb-3">
@@ -322,7 +415,7 @@ export default function TuyenDung() {
                             <button
                                 onClick={loadMore}
                                 disabled={isLoadingMore}
-                                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-8 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 mx-auto"
+                                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 mx-auto"
                             >
                                 {isLoadingMore ? (
                                     <>
@@ -331,7 +424,7 @@ export default function TuyenDung() {
                                     </>
                                 ) : (
                                     <>
-                                        <span>Tải thêm vị trí</span>
+                                        <span>Tải thêm vị trí ({pagination.totalCount - tuyenDungs.length} còn lại)</span>
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                         </svg>
@@ -348,12 +441,23 @@ export default function TuyenDung() {
                     <h3 className="text-xl font-semibold text-gray-600 mb-2">
                         {searchTerm ? 'Không tìm thấy vị trí tuyển dụng' : 'Chưa có vị trí tuyển dụng'}
                     </h3>
-                    <p className="text-gray-500">
+                    <p className="text-gray-500 mb-4">
                         {searchTerm
                             ? `Không có kết quả cho "${searchTerm}". Thử từ khóa khác.`
                             : 'Hiện tại chưa có vị trí tuyển dụng nào được đăng.'
                         }
                     </p>
+                    {searchTerm && (
+                        <button
+                            onClick={() => {
+                                setSearchTerm('');
+                                setCurrentPage(1);
+                            }}
+                            className="text-green-600 hover:text-green-700 font-medium"
+                        >
+                            ← Xem tất cả vị trí
+                        </button>
+                    )}
                 </div>
             )}
         </section>

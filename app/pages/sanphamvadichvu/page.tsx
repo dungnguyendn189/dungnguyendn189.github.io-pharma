@@ -120,6 +120,7 @@ function ProductsPageContent() {
 
             const response = await fetch(`/api/thuoc?${params}`);
             const data = await response.json();
+            console.log(data)
 
             if (data.thuocs) {
                 if (append) {

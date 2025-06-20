@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
-import { existsSync, mkdirSync } from 'fs' // ← Thêm import này
+
+export const runtime = 'nodejs'
 
 export async function POST(request: NextRequest) {
     try {
@@ -20,46 +19,36 @@ export async function POST(request: NextRequest) {
             }, { status: 400 })
         }
 
-        // Validate file size (5MB max)
-        const maxSize = 5 * 1024 * 1024 // 5MB
+        // Validate file size (2MB max cho base64)
+        const maxSize = 2 * 1024 * 1024 // 2MB (base64 sẽ tăng ~33% kích thước)
         if (file.size > maxSize) {
             return NextResponse.json({
-                error: 'File quá lớn. Tối đa 5MB'
+                error: 'File quá lớn. Tối đa 2MB cho base64'
             }, { status: 400 })
         }
 
+        // Convert to buffer
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
 
-        // Generate unique filename
-        const timestamp = Date.now()
-        const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
-        const filename = `${timestamp}_${originalName}`
-
-        // Save to public/uploads folder
-        const uploadsDir = join(process.cwd(), 'public', 'uploads')
-        const filepath = join(uploadsDir, filename)
-
-        // Create uploads directory if it doesn't exist
-        // const fs = require('fs') ← Xóa dòng này
-        if (!existsSync(uploadsDir)) { // ← Sử dụng import thay vì fs.existsSync
-            mkdirSync(uploadsDir, { recursive: true }) // ← Sử dụng import thay vì fs.mkdirSync
-        }
-
-        await writeFile(filepath, buffer)
-
-        // Return the public URL
-        const imageUrl = `/uploads/${filename}`
+        // Convert to base64
+        const base64String = buffer.toString('base64')
+        const mimeType = file.type
+        const base64DataUrl = `data:${mimeType};base64,${base64String}`
 
         return NextResponse.json({
             success: true,
-            imageUrl,
+            imageUrl: base64DataUrl, // Trả về base64 data URL
+            originalName: file.name,
+            size: file.size,
+            mimeType: mimeType,
             message: 'Upload thành công'
         })
+
     } catch (error) {
-        console.error('Error uploading file:', error)
+        console.error('Error processing file:', error)
         return NextResponse.json({
-            error: 'Lỗi khi upload file'
+            error: `Lỗi khi xử lý file: ${error instanceof Error ? error.message : 'Unknown error'}`
         }, { status: 500 })
     }
 }

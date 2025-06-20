@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -41,7 +41,8 @@ interface Pagination {
     hasPrev: boolean;
 }
 
-export default function ProductsPage() {
+// Component chính chứa useSearchParams
+function ProductsPageContent() {
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get('category');
 
@@ -119,6 +120,7 @@ export default function ProductsPage() {
 
             const response = await fetch(`/api/thuoc?${params}`);
             const data = await response.json();
+            console.log(data)
 
             if (data.thuocs) {
                 if (append) {
@@ -155,12 +157,28 @@ export default function ProductsPage() {
     }, [selectedCategory, searchTerm]);
 
     useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        const categoryId = searchParams.get('id');
+
         if (categoryParam && danhMucs.length > 0) {
+            if (categoryId) {
+                // Tìm theo ID trước (chính xác hơn)
+                const validCategory = danhMucs.find(dm => dm.id === parseInt(categoryId));
+                if (validCategory) {
+                    setSelectedCategory(validCategory.id);
+                    return;
+                }
+            }
+
+            // Fallback: tìm theo slug
             const validCategory = danhMucs.find(dm =>
                 dm.tenDanhMuc.toLowerCase().replace(/\s+/g, '-') === categoryParam
             );
             if (validCategory) {
                 setSelectedCategory(validCategory.id);
+            } else {
+                // Nếu không có category param, reset về "Tất cả sản phẩm"
+                setSelectedCategory('all');
             }
         }
     }, [categoryParam, danhMucs]);
@@ -593,4 +611,24 @@ export default function ProductsPage() {
             )}
         </div>
     );
+}
+
+// Component wrapper với Suspense - PHẦN QUAN TRỌNG
+export default function ProductsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="flex items-center justify-center h-64">
+                        <div className="text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+                            <p className="mt-4 text-gray-600">Đang tải...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }>
+            <ProductsPageContent />
+        </Suspense>
+    )
 }

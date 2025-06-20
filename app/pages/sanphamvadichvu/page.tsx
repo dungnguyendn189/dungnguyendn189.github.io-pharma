@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -44,7 +44,6 @@ interface Pagination {
 // Component chính chứa useSearchParams
 function ProductsPageContent() {
     const searchParams = useSearchParams();
-    const categoryParam = searchParams.get('category');
 
     const [danhMucs, setDanhMucs] = useState<DanhMuc[]>([]);
     const [thuocs, setThuocs] = useState<Thuoc[]>([]);
@@ -53,13 +52,25 @@ function ProductsPageContent() {
     const [sortBy, setSortBy] = useState<string>('default');
     const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [pagination, setPagination] = useState<Pagination | null>(null);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
-
     const [categoryCounts, setCategoryCounts] = useState<Record<number | 'all', number>>({} as Record<number | 'all', number>);
 
-    const fetchCategoryCounts = async () => {
+    // ✅ Debounce search term
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [searchTerm]);
+
+    // ✅ Memoized fetch functions
+    const fetchCategoryCounts = useCallback(async () => {
+        if (danhMucs.length === 0) return;
+
         try {
             // Get total count
             const allResponse = await fetch('/api/thuoc?limit=0&trangThai=con_hang');
@@ -80,7 +91,49 @@ function ProductsPageContent() {
         } catch (error) {
             console.error('Error fetching category counts:', error);
         }
-    };
+    }, [danhMucs]);
+
+    // ✅ Memoized fetch thuocs function
+    const fetchThuocs = useCallback(async (page = 1, append = false) => {
+        try {
+            if (page === 1) setLoading(true);
+            else setIsLoadingMore(true);
+
+            const params = new URLSearchParams({
+                page: page.toString(),
+                limit: '20',
+                trangThai: 'con_hang'
+            });
+
+            if (selectedCategory !== 'all') {
+                params.append('danhMucId', selectedCategory.toString());
+            }
+
+            if (debouncedSearchTerm.trim()) {
+                params.append('search', debouncedSearchTerm.trim());
+            }
+
+            const response = await fetch(`/api/thuoc?${params}`);
+            const data = await response.json();
+            console.log(data);
+
+            if (data.thuocs) {
+                if (append) {
+                    setThuocs(prev => [...prev, ...data.thuocs]);
+                } else {
+                    setThuocs(data.thuocs);
+                }
+                setPagination(data.pagination);
+                setCurrentPage(page);
+            }
+        } catch (error) {
+            console.error('Error fetching thuocs:', error);
+        } finally {
+            setLoading(false);
+            setIsLoadingMore(false);
+        }
+    }, [selectedCategory, debouncedSearchTerm]);
+
     // Fetch dữ liệu danh mục
     const fetchDanhMuc = async () => {
         try {
@@ -98,71 +151,32 @@ function ProductsPageContent() {
         }
     };
 
-    // Fetch dữ liệu thuốc với các filter
-    const fetchThuocs = async (page = 1, append = false) => {
-        try {
-            if (page === 1) setLoading(true);
-            else setIsLoadingMore(true);
-
-            const params = new URLSearchParams({
-                page: page.toString(),
-                limit: '20',
-                trangThai: 'con_hang'
-            });
-
-            if (selectedCategory !== 'all') {
-                params.append('danhMucId', selectedCategory.toString());
-            }
-
-            if (searchTerm.trim()) {
-                params.append('search', searchTerm.trim());
-            }
-
-            const response = await fetch(`/api/thuoc?${params}`);
-            const data = await response.json();
-            console.log(data)
-
-            if (data.thuocs) {
-                if (append) {
-                    setThuocs(prev => [...prev, ...data.thuocs]);
-                } else {
-                    setThuocs(data.thuocs);
-                }
-                setPagination(data.pagination);
-                setCurrentPage(page);
-            }
-        } catch (error) {
-            console.error('Error fetching thuocs:', error);
-        } finally {
-            setLoading(false);
-            setIsLoadingMore(false);
-        }
-    };
-
+    // ✅ Initial data fetch - only once
     useEffect(() => {
         fetchDanhMuc();
     }, []);
 
+    // ✅ Fetch category counts when danhMucs change
     useEffect(() => {
         if (danhMucs.length > 0) {
             fetchCategoryCounts();
-            fetchThuocs(1, false);
         }
-    }, [danhMucs]);
+    }, [danhMucs, fetchCategoryCounts]);
 
+    // ✅ Fetch thuocs when dependencies change
     useEffect(() => {
         if (danhMucs.length > 0) {
             fetchThuocs(1, false);
         }
-    }, [selectedCategory, searchTerm]);
+    }, [danhMucs, fetchThuocs]);
 
+    // ✅ Handle URL params change
     useEffect(() => {
         const categoryParam = searchParams.get('category');
         const categoryId = searchParams.get('id');
 
         if (categoryParam && danhMucs.length > 0) {
             if (categoryId) {
-                // Tìm theo ID trước (chính xác hơn)
                 const validCategory = danhMucs.find(dm => dm.id === parseInt(categoryId));
                 if (validCategory) {
                     setSelectedCategory(validCategory.id);
@@ -170,66 +184,69 @@ function ProductsPageContent() {
                 }
             }
 
-            // Fallback: tìm theo slug
             const validCategory = danhMucs.find(dm =>
                 dm.tenDanhMuc.toLowerCase().replace(/\s+/g, '-') === categoryParam
             );
             if (validCategory) {
                 setSelectedCategory(validCategory.id);
             } else {
-                // Nếu không có category param, reset về "Tất cả sản phẩm"
                 setSelectedCategory('all');
             }
         }
-    }, [categoryParam, danhMucs]);
+    }, [searchParams, danhMucs]);
 
-    const sortedThuocs = [...thuocs].sort((a, b) => {
-        switch (sortBy) {
-            case 'name':
-                return a.tenThuoc.localeCompare(b.tenThuoc);
-            case 'name-desc':
-                return b.tenThuoc.localeCompare(a.tenThuoc);
-            case 'price-asc':
-                return a.gia - b.gia;
-            case 'price-desc':
-                return b.gia - a.gia;
-            case 'popular':
-                return b.luotXem - a.luotXem;
-            case 'newest':
-                return new Date(b.taoLuc).getTime() - new Date(a.taoLuc).getTime();
-            default:
-                return 0;
-        }
-    });
+    // ✅ Memoized sorted thuocs
+    const sortedThuocs = useCallback(() => {
+        return [...thuocs].sort((a, b) => {
+            switch (sortBy) {
+                case 'name':
+                    return a.tenThuoc.localeCompare(b.tenThuoc);
+                case 'name-desc':
+                    return b.tenThuoc.localeCompare(a.tenThuoc);
+                case 'price-asc':
+                    return a.gia - b.gia;
+                case 'price-desc':
+                    return b.gia - a.gia;
+                case 'popular':
+                    return b.luotXem - a.luotXem;
+                case 'newest':
+                    return new Date(b.taoLuc).getTime() - new Date(a.taoLuc).getTime();
+                default:
+                    return 0;
+            }
+        });
+    }, [thuocs, sortBy])();
 
-    const handleCategorySelect = (categoryId: number | 'all') => {
+    const handleCategorySelect = useCallback((categoryId: number | 'all') => {
         setSelectedCategory(categoryId);
         setShowCategoryModal(false);
         setCurrentPage(1);
-    };
+    }, []);
 
-    const handleSearchChange = (value: string) => {
+    // ✅ Fix search change - no immediate API call
+    const handleSearchChange = useCallback((value: string) => {
         setSearchTerm(value);
         setCurrentPage(1);
-    };
+    }, []);
 
-    const loadMore = () => {
+    const loadMore = useCallback(() => {
         if (pagination?.hasNext && !isLoadingMore) {
             fetchThuocs(currentPage + 1, true);
         }
-    };
+    }, [pagination?.hasNext, isLoadingMore, currentPage, fetchThuocs]);
 
-    const getCurrentCategoryName = () => {
+    const getCurrentCategoryName = useCallback(() => {
         if (selectedCategory === 'all') return 'Tất cả sản phẩm';
         const category = danhMucs.find(dm => dm.id === selectedCategory);
         return category?.tenDanhMuc || 'Tất cả sản phẩm';
-    };
+    }, [selectedCategory, danhMucs]);
 
-    const getCategoryCount = (categoryId: number | 'all') => {
+    const getCategoryCount = useCallback((categoryId: number | 'all') => {
         return categoryCounts[categoryId] || 0;
-    };
+    }, [categoryCounts]);
+
     // Tạo placeholder image nếu không có hình ảnh
-    const getPlaceholderImage = (tenThuoc: string) => {
+    const getPlaceholderImage = useCallback((tenThuoc: string) => {
         return `data:image/svg+xml;base64,${btoa(`
             <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100%" height="100%" fill="#f3f4f6"/>
@@ -245,7 +262,7 @@ function ProductsPageContent() {
                 </text>
             </svg>
         `)}`;
-    };
+    }, []);
 
     if (loading && thuocs.length === 0) {
         return (
@@ -306,6 +323,13 @@ function ProductsPageContent() {
                                     <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
+
+                                    {/* ✅ Loading indicator when searching */}
+                                    {searchTerm !== debouncedSearchTerm && (
+                                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                            <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -343,6 +367,7 @@ function ProductsPageContent() {
                                                 className="w-6 h-6 rounded flex items-center justify-center text-sm text-white"
                                                 style={{ backgroundColor: danhMuc.mauSac || '#0a5e42' }}
                                             >
+                                                {danhMuc.icon || '📦'}
                                             </div>
                                             <span className="text-sm font-medium text-left">{danhMuc.tenDanhMuc}</span>
                                         </div>
@@ -391,6 +416,13 @@ function ProductsPageContent() {
                                 <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
+
+                                {/* ✅ Loading indicator when searching */}
+                                {searchTerm !== debouncedSearchTerm && (
+                                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                        <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -539,7 +571,7 @@ function ProductsPageContent() {
                 </div>
             </div>
 
-            {/* Mobile Category Modal - Cũng cần update tương tự */}
+            {/* Mobile Category Modal */}
             {showCategoryModal && (
                 <div className="fixed inset-0 bg-white z-50 lg:hidden animate-fadeIn">
                     <div className="h-full flex flex-col">
@@ -613,7 +645,7 @@ function ProductsPageContent() {
     );
 }
 
-// Component wrapper với Suspense - PHẦN QUAN TRỌNG
+// Component wrapper với Suspense
 export default function ProductsPage() {
     return (
         <Suspense fallback={
@@ -630,5 +662,5 @@ export default function ProductsPage() {
         }>
             <ProductsPageContent />
         </Suspense>
-    )
+    );
 }

@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
+// Add CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -44,8 +55,7 @@ export async function POST(request: NextRequest) {
     // Test password trực tiếp (để debug)
     const directMatch = matKhau === admin.matKhau
     console.log('Direct password match:', directMatch)
-    
-    return NextResponse.json({
+      return NextResponse.json({
       success: isValidPassword,
       debug: {
         adminFound: true,
@@ -64,7 +74,7 @@ export async function POST(request: NextRequest) {
         email: admin.email,
         vaiTro: admin.vaiTro
       } : null
-    })
+    }, { headers: corsHeaders })
     
   } catch (error) {
     console.error('❌ Login test error:', error)

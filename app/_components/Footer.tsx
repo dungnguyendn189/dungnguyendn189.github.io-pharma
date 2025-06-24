@@ -102,13 +102,7 @@ export default function Footer() {
             {/* Fixed contact buttons */}
             <div className="fixed right-4 bottom-4 flex flex-col space-y-3 z-50">
                 {/* Messenger chat button */}                <a href="https://zalo.me/0376640406" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600">
-                    <Image
-                        src="/socialicon/zalo.png"
-                        alt="Zalo"
-                        width={24}
-                        height={24}
-                        className="w-6 h-6"
-                    />
+
                 </a>
                 {/* Phone call button */}
                 <a href="tel:0376640406n" className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600">

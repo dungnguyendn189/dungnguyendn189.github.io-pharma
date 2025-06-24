@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import bcrypt from 'bcryptjs'
 
 
 export async function POST(request: NextRequest) {
@@ -32,10 +33,8 @@ export async function POST(request: NextRequest) {
                 { error: 'Thông tin đăng nhập không đúng' },
                 { status: 401 }
             )
-        }
-
-        console.log('Comparing passwords...')
-        const isValidPassword = matKhau === admin.matKhau // ✅ So sánh trực tiếp
+        }        console.log('Comparing passwords...')
+        const isValidPassword = await bcrypt.compare(matKhau, admin.matKhau)
         console.log('Password valid:', isValidPassword)
 
         if (!isValidPassword) {

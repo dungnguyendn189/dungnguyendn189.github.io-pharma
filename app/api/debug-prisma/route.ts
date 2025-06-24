@@ -32,12 +32,12 @@ export async function GET() {
       adminCount,
       timestamp: new Date().toISOString()
     })
-    
-  } catch (error) {
-    console.error('=== PRISMA DEBUG ERROR ===', error)    const errorDetails: Record<string, any> = {
+      } catch (error) {
+    console.error('=== PRISMA DEBUG ERROR ===', error)
+      const errorDetails: { [key: string]: string | null } = {
       message: error instanceof Error ? error.message : String(error),
       name: error instanceof Error ? error.name : 'Unknown',
-      stack: error instanceof Error ? error.stack : null
+      stack: error instanceof Error ? (error.stack || null) : null
     }
     
     // Check for specific Prisma errors
